@@ -3,132 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZeroCores - Official Server Handbook & Isolation Guide</title>
+    <title>ZeroCores - Official Handbook & Multi-Menu Handbook</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+    <!-- TOP HEADER & MAIN TAB NAVIGATION -->
     <header>
-        <a href="#" class="brand">
+        <div class="brand">
             <div class="brand-logo">Z</div>
             <span>ZEROCORES Handbook</span>
-        </a>
-        <div class="nav-controls">
-            <button class="menu-toggle" id="menuToggle">☰ Menu</button>
         </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle">☰ Menu Tabs</button>
+        <nav class="main-tabs" id="mainTabs">
+            <button class="tab-btn active" onclick="switchTab('beranda')">🏠 Beranda (Stage Setup)</button>
+            <button class="tab-btn" onclick="switchTab('plugins')">🧩 Panduan Plugin Master</button>
+            <button class="tab-btn" onclick="switchTab('isolasi')">🌐 Isolasi World</button>
+            <button class="tab-btn" onclick="switchTab('modes')">📊 Mode Permainan</button>
+            <button class="tab-btn" onclick="switchTab('cheatsheet')">🛠️ Cheat Sheet & Fix</button>
+        </nav>
     </header>
 
-    <div class="overlay" id="overlay"></div>
-
     <div class="container">
-        <aside id="sidebar">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari plugin/tutorial (cth: Abyssal, LuckPerms)...">
+        <!-- TAB 1: BERANDA (STAGE SETUP ROADMAP) -->
+        <div id="tab-beranda" class="tab-content active">
+            <div class="hero-box">
+                <h1>Roadmap Setup ZeroCores Server</h1>
+                <p>Ikuti tahap (stage) di bawah ini secara berurutan agar setup server berjalan dari nol sampai siap dibuka untuk publik tanpa error.</p>
             </div>
-            <nav id="navTree">
-                <div class="nav-group">
-                    <div class="nav-group-title">Sistem & Arsitektur</div>
-                    <ul class="nav-links">
-                        <li><a href="#architecture">Arsitektur ZeroNest</a></li>
-                        <li><a href="#pterodactyl">Panel Pterodactyl (HP)</a></li>
-                        <li><a href="#multiverse">Multiverse (World Mgmt)</a></li>
-                    </ul>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">ISOLASI WORLD & PLUGIN</div>
-                    <ul class="nav-links">
-                        <li><a href="#world-isolation">Trik Isolasi Per-World</a></li>
-                        <li><a href="#isolation-matrix">Matriks Pemisahan World</a></li>
-                    </ul>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Proteksi & Visual</div>
-                    <ul class="nav-links">
-                        <li><a href="#worldedit">WorldEdit & Schematics</a></li>
-                        <li><a href="#worldguard">WorldGuard Protection</a></li>
-                        <li><a href="#fancynpcs">FancyNpcs Setup</a></li>
-                        <li><a href="#decentholograms">DecentHolograms</a></li>
-                    </ul>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Mode Permainan</div>
-                    <ul class="nav-links">
-                        <li><a href="#survival">Survival Economy</a></li>
-                        <li><a href="#medieval">Medieval RPG</a></li>
-                        <li><a href="#fishing">Abyssal Fishing</a></li>
-                        <li><a href="#skyblock">BSkyBlock (BentoBox)</a></li>
-                        <li><a href="#oneblock">AOneBlock + LuckyBlock</a></li>
-                    </ul>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Sistem Inti & Akses</div>
-                    <ul class="nav-links">
-                        <li><a href="#economy">Ekonomi & Vault</a></li>
-                        <li><a href="#luckperms">LuckPerms & Ranks</a></li>
-                        <li><a href="#tab">TAB & Display Scoreboard</a></li>
-                        <li><a href="#geyser">Geyser & Floodgate</a></li>
-                        <li><a href="#chunky">Chunky Pre-generation</a></li>
-                    </ul>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Pemeliharaan & Referensi</div>
-                    <ul class="nav-links">
-                        <li><a href="#security">Security & Backup</a></li>
-                        <li><a href="#troubleshooting">Troubleshooting Matrix</a></li>
-                        <li><a href="#cheatsheet">Master Command Cheat Sheet</a></li>
-                        <li><a href="#docs">Dokumentasi Resmi</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
 
-        <main>
-            <!-- ARCHITECTURE -->
-            <section id="architecture" class="doc-section">
-                <h1>Arsitektur Jaringan ZeroNest</h1>
-                <p>Seluruh sistem server ZEROCORES berpusat pada Lobby utama bernama <strong>ZeroNest</strong>. Player Java dan Bedrock terkoneksi melalui satu instance Paper Server 1.21.x dengan struktur world terisolasi.</p>
-
-                <div class="code-container">
-                    <div class="code-header"><span>Struktur Direktori World ZeroNest</span></div>
-                    <pre>
-ZEROCORES (Paper 1.21.x / Java 25)
-│
-├── Lobby (World: Lobby) ➔ [Spawn Utama & NPC Navigation]
-│
-├── Survival Economy
-│   ├── Survival (World: Survival)
-│   ├── Survival_Nether (World: Survival_nether)
-│   └── Survival_TheEnd (World: Survival_the_end)
-│
-├── Medieval RPG
-│   └── Medieval (World: Medieval) ➔ [No Nether/End]
-│
-├── Fishing
-│   └── Fishing (World: Fishing) ➔ [No Nether/End]
-│
-├── SkyBlock (Managed via BentoBox)
-│   ├── SkyBlock (World: bskyblock_world)
-│   └── SkyBlock_Nether (World: bskyblock_world_nether)
-│
-└── OneBlock + LuckyBlock (Managed via BentoBox)
-    ├── OneBlock (World: aoneblock_world)
-    └── OneBlock_Nether (World: aoneblock_world_nether)
-                    </pre>
+            <div class="stage-card">
+                <div class="stage-number">STAGE 1</div>
+                <div class="stage-body">
+                    <h2>Setup Panel & Environment Core</h2>
+                    <p>Persiapan awal pada LavaHosting Pterodactyl Panel sebelum memasukkan plugin.</p>
+                    <ul>
+                        <li><strong>Java Version:</strong> Pastikan menggunakan Java 25 / Java 21 di tab Startup Panel.</li>
+                        <li><strong>Startup Command:</strong> <code class="inline-code">java -Xms128M -XX:MaxRAMPercentage=95.0 -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar</code></li>
+                        <li><strong>Folder Initialization:</strong> Jalankan server 1x untuk generate folder <code>/plugins/</code> dan <code>server.properties</code> (set <code>online-mode=false</code>).</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
 
-            <!-- WORLD ISOLATION GUIDE (PENTING) -->
-            <section id="world-isolation" class="doc-section">
-                <h1>Cara Isolasi Plugin Agar Tidak Ikut ke World Lain</h1>
-                <p>Fitur seperti AbyssalFishing, MythicMobs, atau AuraSkills hanya boleh berjalan di world khusus (misal: Fishing atau Medieval) dan <strong>MATI TOTAL di Survival Economy</strong>.</p>
+            <div class="stage-card">
+                <div class="stage-number">STAGE 2</div>
+                <div class="stage-body">
+                    <h2>Inisialisasi World & Multiverse</h2>
+                    <p>Membuat struktur dunia dasar ZeroNest.</p>
+                    <div class="code-container">
+                        <div class="code-header"><span><span class="ctx-badge ctx-console">CONSOLE</span> Perintah Inisialisasi World</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre>
+mv create Survival normal
+mv create Survival_nether nether
+mv create Survival_the_end end
+mv create Medieval normal
+mv create Fishing normal -g VoidGen
+                        </pre>
+                    </div>
+                </div>
+            </div>
 
-                <h3>1. Isolasi via Config YAML (`disabled-worlds`)</h3>
+            <div class="stage-card">
+                <div class="stage-number">STAGE 3</div>
+                <div class="stage-body">
+                    <h2>Pembangunan Lobby & Proteksi Region</h2>
+                    <p>Paste schematic Lobby utama dan kunci proteksi pvp & break.</p>
+                    <div class="code-container">
+                        <div class="code-header"><span><span class="ctx-badge ctx-player">PLAYER</span> WorldEdit & WorldGuard Lobby</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre>
+//schem load lobby_zero_nest
+//paste -s
+//pos1
+//pos2
+/rg define lobby_protect
+/rg flag lobby_protect pvp deny
+/rg flag lobby_protect mob-spawning deny
+/rg flag lobby_protect block-break deny
+                        </pre>
+                    </div>
+                </div>
+            </div>
 
-                <h4>A. AbyssalFishing (Hanya di World Fishing)</h4>
-                <p>Edit file <code>/plugins/AbyssalFishing/config.yml</code>:</p>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-config">CONFIG</span> /plugins/AbyssalFishing/config.yml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
+            <div class="stage-card">
+                <div class="stage-number">STAGE 4</div>
+                <div class="stage-body">
+                    <h2>Pemasangan Interaksi NPC & Hologram</h2>
+                    <p>Membuat NPC penghubung ke masing-masing mode dan papan hologram.</p>
+                    <div class="code-container">
+                        <div class="code-header"><span><span class="ctx-badge ctx-player">PLAYER</span> Interaksi Navigation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre>
+/npc create medivalrpg
+/npc displayname medivalrpg &c&l⚔ MEDIEVAL RPG
+/npc action medivalrpg add RIGHT_CLICK player_command mv tp %player% Medieval
+
+/dh create lobby_welcome
+/dh line add lobby_welcome &5&lZERONEST
+/dh line add lobby_welcome &dSelamat datang di ZeroNest
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-number">STAGE 5</div>
+                <div class="stage-body">
+                    <h2>Hirarki Ranks, Permission & Isolasi World</h2>
+                    <p>Membuat rank dasar dan mengunci plugin pancingan/RPG agar tidak bocor ke Survival Economy.</p>
+                    <div class="code-container">
+                        <div class="code-header"><span><span class="ctx-badge ctx-console">CONSOLE</span> Setup Rank LuckPerms</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre>
+/lp creategroup zero
+/lp creategroup zerocores
+/lp group zerocores parent add zero
+
+/lp group zero permission set essentials.sethome true
+/lp group zero meta setsethome.multiple.default 3
+/lp group zero permission set abyssal-fishing.use false world=Survival
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-number">STAGE 6</div>
+                <div class="stage-body">
+                    <h2>Konektivitas Crossplay Bedrock & Pre-Generation</h2>
+                    <p>Mengaktifkan Geyser/Floodgate serta pre-render chunk agar server tidak lag.</p>
+                    <div class="code-container">
+                        <div class="code-header"><span><span class="ctx-badge ctx-console">CONSOLE</span> Pre-gen World Survival</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                        <pre>
+chunky world Survival
+chunky radius 2000
+chunky start
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: PANDUAN PLUGIN MASTER (DIBAGI PER PLUGIN & TUTORIAL) -->
+        <div id="tab-plugins" class="tab-content">
+            <div class="search-box">
+                <input type="text" id="pluginSearch" placeholder="Cari plugin (cth: Multiverse, LuckPerms, Geyser)..." onkeyup="filterPlugins()">
+            </div>
+
+            <div class="plugin-item-card" data-name="multiverse">
+                <h2>Multiverse-Core</h2>
+                <p><strong>Inti Fungsi:</strong> Pengelola dan pembuat dunia (world) di server.</p>
+                <div class="sub-tab-box">
+                    <h3>🎮 Tutorial In-Game (Command)</h3>
+                    <div class="code-container"><pre>/mv tp Survival | /mv setspawn | /mv load Medieval | /mv unload Medieval</pre></div>
+                    <h3>⚙️ Tutorial Panel (Config / Pterodactyl)</h3>
+                    <p>Edit file <code>/plugins/Multiverse-Core/worlds.yml</code> untuk mengubah pvp/gamemode default world.</p>
+                </div>
+            </div>
+
+            <div class="plugin-item-card" data-name="luckperms">
+                <h2>LuckPerms</h2>
+                <p><strong>Inti Fungsi:</strong> Pengatur hak akses, rank, dan permission player/staff.</p>
+                <div class="sub-tab-box">
+                    <h3>🎮 Tutorial In-Game (Command)</h3>
+                    <div class="code-container"><pre>/lp user [player] group set zerocores | /lp group zero permission set [node] true</pre></div>
+                    <h3>⚙️ Tutorial Panel (Config / Pterodactyl)</h3>
+                    <p>Buka editor visual via web dengan perintah console: <code>/lp editor</code> lalu simpan link yang diberikan.</p>
+                </div>
+            </div>
+
+            <div class="plugin-item-card" data-name="fancynpcs">
+                <h2>FancyNpcs</h2>
+                <p><strong>Inti Fungsi:</strong> NPC visual interaktif untuk teleportasi player.</p>
+                <div class="sub-tab-box">
+                    <h3>🎮 Tutorial In-Game (Command)</h3>
+                    <div class="code-container"><pre>/npc create survival | /npc displayname survival &a&l⚔ SURVIVAL | /npc action survival add RIGHT_CLICK player_command mv tp %player% Survival</pre></div>
+                    <h3>⚙️ Tutorial Panel (Config / Pterodactyl)</h3>
+                    <p>Lokasi data NPC tersimpan di <code>/plugins/FancyNpcs/config.json</code>.</p>
+                </div>
+            </div>
+
+            <div class="plugin-item-card" data-name="abyssalfishing">
+                <h2>AbyssalFishing</h2>
+                <p><strong>Inti Fungsi:</strong> Sistem pancingan custom dan pasar jual ikan khusus di world Fishing.</p>
+                <div class="sub-tab-box">
+                    <h3>🎮 Tutorial In-Game (Command)</h3>
+                    <div class="code-container"><pre>/abyssalfishing reload | /abyssalfishing sellall</pre></div>
+                    <h3>⚙️ Tutorial Panel (Isolasi & Config)</h3>
+                    <p>Edit <code>/plugins/AbyssalFishing/config.yml</code> dan isi <code>disabled-worlds: ["Survival", "Lobby", "Medieval"]</code>.</p>
+                </div>
+            </div>
+
+            <div class="plugin-item-card" data-name="geyser">
+                <h2>Geyser-Spigot & Floodgate</h2>
+                <p><strong>Inti Fungsi:</strong> Menghubungkan player Minecraft Bedrock (Android/iOS) ke Java server.</p>
+                <div class="sub-tab-box">
+                    <h3>🎮 Tutorial In-Game (Command)</h3>
+                    <div class="code-container"><pre>/geyser reload | /geyser connectiontest</pre></div>
+                    <h3>⚙️ Tutorial Panel (Port & Security)</h3>
+                    <p>Buka <code>/plugins/Geyser-Spigot/config.yml</code>, atur <code>port: 19132</code> (Port UDP LavaHosting) dan pastikan file <code>/plugins/Floodgate/key.pem</code> tidak dihapus.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: ISOLASI WORLD -->
+        <div id="tab-isolasi" class="tab-content">
+            <div class="hero-box">
+                <h1>Panduan Isolasi Plugin Per-World</h1>
+                <p>Cara memastikan plugin pancingan, RPG, dan klaim tanah **MATI TOTAL** di world yang tidak seharusnya.</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header"><span><span class="ctx-badge ctx-config">CONFIG</span> /plugins/AbyssalFishing/config.yml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre>
 disabled-worlds:
   - "Survival"
   - "Survival_nether"
@@ -137,481 +221,58 @@ disabled-worlds:
   - "Medieval"
   - "bskyblock_world"
   - "aoneblock_world"
-                    </pre>
-                </div>
+                </pre>
+            </div>
 
-                <h4>B. AuraSkills (Hanya di World Medieval)</h4>
-                <p>Edit file <code>/plugins/AuraSkills/config.yml</code>:</p>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-config">CONFIG</span> /plugins/AuraSkills/config.yml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-disabled-worlds:
-  - "Survival"
-  - "Survival_nether"
-  - "Survival_the_end"
-  - "Lobby"
-  - "Fishing"
-  - "bskyblock_world"
-  - "aoneblock_world"
-                    </pre>
-                </div>
-
-                <h4>C. MythicMobs (Hanya di World Medieval)</h4>
-                <p>Edit file <code>/plugins/MythicMobs/config.yml</code>:</p>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-config">CONFIG</span> /plugins/MythicMobs/config.yml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-General:
-  DisabledWorlds:
-  - Survival
-  - Survival_nether
-  - Survival_the_end
-  - Lobby
-  - Fishing
-  - bskyblock_world
-  - aoneblock_world
-                    </pre>
-                </div>
-
-                <h3>2. Isolasi Command & Permission via LuckPerms World Context</h3>
-                <p>Jalankan perintah berikut di <strong>Console Pterodactyl</strong> untuk mematikan akses command plugin tertentu khusus di world Survival atau World lain:</p>
-
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-console">CONSOLE</span> LuckPerms Context Execution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-# Matikan command AbyssalFishing di World Survival
+            <div class="code-container">
+                <div class="code-header"><span><span class="ctx-badge ctx-console">CONSOLE</span> Command LuckPerms Isolation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                <pre>
 /lp group zero permission set abyssal-fishing.use false world=Survival
-
-# Matikan command AuraSkills di World Survival & Lobby
 /lp group zero permission set auraskills.use false world=Survival
-/lp group zero permission set auraskills.use false world=Lobby
-
-# Matikan GriefPrevention Claim di World Medieval & Fishing (Hanya Boleh di Survival)
 /lp group zero permission set griefprevention.claims false world=Medieval
-/lp group zero permission set griefprevention.claims false world=Fishing
-/lp group zero permission set griefprevention.claims false world=Lobby
-                    </pre>
+                </pre>
+            </div>
+        </div>
+
+        <!-- TAB 4: MODE PERMAINAN -->
+        <div id="tab-modes" class="tab-content">
+            <h2>Pilih Mode Permainan:</h2>
+            <div class="mode-grid">
+                <div class="mode-card">
+                    <h3>⚔️ Survival Economy</h3>
+                    <p>Dunia survival vanila + klaim lahan (GriefPrevention), toko GUI, auction house, dan RTP.</p>
                 </div>
-            </section>
-
-            <!-- ISOLATION MATRIX TABLE -->
-            <section id="isolation-matrix" class="doc-section">
-                <h1>Matriks Pemisahan Plugin Antar-World</h1>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th>Plugin</th>
-                            <th>Lobby</th>
-                            <th>Survival</th>
-                            <th>Medieval</th>
-                            <th>Fishing</th>
-                            <th>SkyBlock</th>
-                            <th>OneBlock</th>
-                        </tr>
-                        <tr>
-                            <td><strong>GriefPrevention</strong></td>
-                            <td>❌ Off</td>
-                            <td>✅ ON</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                        </tr>
-                        <tr>
-                            <td><strong>MythicMobs</strong></td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>✅ ON</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                        </tr>
-                        <tr>
-                            <td><strong>AbyssalFishing</strong></td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>✅ ON</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                        </tr>
-                        <tr>
-                            <td><strong>AuraSkills</strong></td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>✅ ON</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                        </tr>
-                        <tr>
-                            <td><strong>BSkyBlock</strong></td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>✅ ON</td>
-                            <td>❌ Off</td>
-                        </tr>
-                        <tr>
-                            <td><strong>AOneBlock</strong></td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>❌ Off</td>
-                            <td>✅ ON</td>
-                        </tr>
-                    </table>
+                <div class="mode-card">
+                    <h3>🛡️ Medieval RPG</h3>
+                    <p>Dunia dark fantasy tanpa Nether/End, pertarungan Boss MythicMobs, dan skill AuraSkills.</p>
                 </div>
-            </section>
-
-            <!-- PTERODACTYL -->
-            <section id="pterodactyl" class="doc-section">
-                <h1>Operasional Panel Pterodactyl via HP</h1>
-                <p>Tutorial mengelola server secara nyaman menggunakan browser mobile tanpa PC.</p>
-
-                <h3>Parameter Startup Utama</h3>
-                <div class="code-container">
-                    <div class="code-header"><span>Startup Flags (LavaHosting)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>java -Xms128M -XX:MaxRAMPercentage=95.0 -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar</pre>
+                <div class="mode-card">
+                    <h3>🎣 Abyssal Fishing</h3>
+                    <p>Dunia pancingan terisolasi ber-type VoidGen dengan ekonomi penjualan ikan kustom.</p>
                 </div>
-
-                <h3>Prosedur Pengelolaan File via Pterodactyl Mobile</h3>
-                <ol>
-                    <li><strong>Upload Plugin/World:</strong> Akses menu <code>File Manager</code> ➔ Navigasi ke folder target (contoh: <code>/plugins</code>) ➔ Tekan tombol <code>Upload</code>. Jika file besar (.zip world), ekstrak menggunakan fitur <code>Unarchive</code> bawaan Pterodactyl.</li>
-                    <li><strong>Melihat Crash Logs:</strong> Buka folder <code>/logs</code> ➔ Buka <code>latest.log</code>. Gunakan pencarian browser (Find in Page) dengan kata kunci <code>ERROR</code> atau <code>Exception</code>.</li>
-                </ol>
-            </section>
-
-            <!-- MULTIVERSE -->
-            <section id="multiverse" class="doc-section">
-                <h1>Multiverse-Core (World Management)</h1>
-                <p>Digunakan untuk mengelola dunia generik (Lobby, Survival, Medieval, Fishing). <strong>Jangan gunakan untuk SkyBlock/OneBlock.</strong></p>
-
-                <h3>1. Membuat World Baru</h3>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-console">Console</span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-mv create Survival normal
-mv create Survival_nether nether
-mv create Survival_the_end end
-mv create Medieval normal
-mv create Fishing normal -g VoidGen
-                    </pre>
+                <div class="mode-card">
+                    <h3>☁️ SkyBlock (BSkyBlock)</h3>
+                    <p>Pulau melayang yang dikelola penuh oleh BentoBox Addon.</p>
                 </div>
-
-                <h3>2. Navigasi & Management World</h3>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/mv tp Survival
-/mv setspawn
-/mv load Medieval
-/mv unload Medieval
-                    </pre>
+                <div class="mode-card">
+                    <h3>⛏️ OneBlock (AOneBlock)</h3>
+                    <p>Game mode dari 1 blok beregenerasi beserta LuckyBlock progression.</p>
                 </div>
-            </section>
+            </div>
+        </div>
 
-            <!-- WORLDEDIT -->
-            <section id="worldedit" class="doc-section">
-                <h1>WorldEdit & Management Schematic</h1>
-                <p>Digunakan untuk manipulasi struktur, pembangunan Lobby, dan penataan arena.</p>
-
-                <h3>Prosedur Load & Paste Schematic</h3>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-//schem load lobby_zero_nest
-//rotate 90
-//paste -s
-//undo
-                    </pre>
-                </div>
-            </section>
-
-            <!-- WORLDGUARD -->
-            <section id="worldguard" class="doc-section">
-                <h1>WorldGuard (Proteksi Region Lobby)</h1>
-                <h3>Setup Proteksi Lobby "lobby_protect"</h3>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-//pos1
-//pos2
-/rg define lobby_protect
-/rg flag lobby_protect pvp deny
-/rg flag lobby_protect mob-spawning deny
-/rg flag lobby_protect block-break deny
-/rg flag lobby_protect block-place deny
-/rg flag lobby_protect greeting &dSelamat datang di &bZeroNest!
-/rg flag lobby_protect farewell &cAnda meninggalkan area aman Lobby.
-                    </pre>
-                </div>
-            </section>
-
-            <!-- FANCYNPCS -->
-            <section id="fancynpcs" class="doc-section">
-                <h1>FancyNpcs (Interaktif Teleportation NPC)</h1>
-                <h3>Daftar Identitas NPC ZeroNest</h3>
-                <div class="table-responsive">
-                    <table>
-                        <tr><th>Mode</th><th>Internal Name (STRICT)</th><th>Display Name</th><th>Target Action Command</th></tr>
-                        <tr><td>Survival</td><td>survival</td><td>&a&l⚔ SURVIVAL</td><td><code>mv tp %player% Survival</code></td></tr>
-                        <tr><td>Medieval RPG</td><td>medivalrpg</td><td>&c&l⚔ MEDIEVAL RPG</td><td><code>mv tp %player% Medieval</code></td></tr>
-                        <tr><td>Fishing</td><td>fishing</td><td>&b&l🎣 FISHING</td><td><code>mv tp %player% Fishing</code></td></tr>
-                        <tr><td>SkyBlock</td><td>skyblock</td><td>&e&l☁ SKYBLOCK</td><td><code>bsb island tp %player%</code></td></tr>
-                        <tr><td>OneBlock</td><td>oneblock</td><td>&6&l⛏ ONEBLOCK</td><td><code>ob island tp %player%</code></td></tr>
-                    </table>
-                </div>
-
-                <h3>Command Pembuatan NPC (Medieval Example)</h3>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/npc create medivalrpg
-/npc skin medivalrpg Technoblade
-/npc displayname medivalrpg &c&l⚔ MEDIEVAL RPG
-/npc turnToPlayer medivalrpg true
-/npc action medivalrpg add RIGHT_CLICK player_command mv tp %player% Medieval
-                    </pre>
-                </div>
-            </section>
-
-            <!-- DECENTHOLOGRAMS -->
-            <section id="decentholograms" class="doc-section">
-                <h1>DecentHolograms (Visual Information)</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/dh create lobby_welcome
-/dh line add lobby_welcome &5&lZERONEST
-/dh line add lobby_welcome &dSelamat datang di ZeroNest
-/dh line add lobby_welcome &7Temukan petualanganmu di sini.
-/dh line add lobby_welcome &5✦ &dSelamat bermain &5✦
-                    </pre>
-                </div>
-            </section>
-
-            <!-- SURVIVAL -->
-            <section id="survival" class="doc-section">
-                <h1>Mode: Survival Economy</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-perm">LuckPerms</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/lp group zero permission set griefprevention.claims true
-/lp group zero permission set griefprevention.createclaims true
-                    </pre>
-                </div>
-            </section>
-
-            <!-- MEDIEVAL RPG -->
-            <section id="medieval" class="doc-section">
-                <h1>Mode: Medieval RPG</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-config">YAML Config</span> (MythicMobs)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-DarkKnight:
-  Type: WITHER_SKELETON
-  Display: '&r&cDark Knight Boss'
-  Health: 500
-  Damage: 12
-  Options:
-    AlwaysShowName: true
-    MovementSpeed: 0.25
-  Drops:
-  - gold_ingot 16 1.0
-  - diamond 4 0.5
-                    </pre>
-                </div>
-            </section>
-
-            <!-- FISHING -->
-            <section id="fishing" class="doc-section">
-                <h1>Mode: Abyssal Fishing</h1>
-                <ol>
-                    <li>Buat world ber-type VoidGen: <span class="ctx-badge ctx-console">Console</span> <code>mv create Fishing normal -g VoidGen</code></li>
-                    <li>Paste schematic pulau/lautan pancingan menggunakan WorldEdit.</li>
-                </ol>
-            </section>
-
-            <!-- SKYBLOCK -->
-            <section id="skyblock" class="doc-section">
-                <h1>Mode: BSkyBlock (BentoBox Engine)</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/bsb island create
-/bsb island go
-/bsb island invite [player]
-/bsb island reset
-                    </pre>
-                </div>
-            </section>
-
-            <!-- ONEBLOCK -->
-            <section id="oneblock" class="doc-section">
-                <h1>Mode: AOneBlock + LuckyBlock</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-player">Player</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/ob island
-/ob count
-/ob phases
-                    </pre>
-                </div>
-            </section>
-
-            <!-- ECONOMY -->
-            <section id="economy" class="doc-section">
-                <h1>Sistem Ekonomi (TheNewEconomy + Vault)</h1>
-                <p>Buka <code>/plugins/Essentials/config.yml</code> dan ubah <code>register-backwards-compatible-vault: false</code> agar tidak terjadi bentrok dua provider ekonomi.</p>
-            </section>
-
-            <!-- LUCKPERMS -->
-            <section id="luckperms" class="doc-section">
-                <h1>LuckPerms & Arsitektur Rank</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-console">Console</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-/lp creategroup zero
-/lp creategroup zerocores
-/lp creategroup creator
-/lp creategroup helper
-/lp creategroup moderator
-/lp creategroup admin
-
-/lp group zerocores parent add zero
-/lp group creator parent add zero
-/lp group helper parent add zero
-/lp group moderator parent add helper
-/lp group admin parent add moderator
-
-/lp group zero permission set essentials.build true
-/lp group zero permission set essentials.sethome true
-/lp group zero meta setsethome.multiple.default 3
-/lp group zero permission set essentials.home true
-/lp group zero permission set essentials.tpa true
-
-/lp group zerocores permission set essentials.fly true
-/lp group zerocores permission set essentials.heal true
-/lp group zerocores permission set essentials.feed true
-/lp group zerocores permission set essentials.heal.cooldown 3600
-                    </pre>
-                </div>
-            </section>
-
-            <!-- TAB -->
-            <section id="tab" class="doc-section">
-                <h1>TAB & Display Scoreboard</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-config">YAML Config</span> (TAB)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-scoreboard:
-  enabled: true
-  toggle-command: /sb
-  scoreboards:
-    zeronest-board:
-      title: "&5&lZERONEST"
-      lines:
-        - "&7&m────────────"
-        - "&fRank: %luckperms_groups%"
-        - "&fBalance: &a$%vault_eco_balance_formatted%"
-        - "&fPlaytime: &e%statistic_time_played:hours%h"
-        - "&fDeaths: &c%statistic_deaths%"
-        - "&fMode: &b%world%"
-        - "&7&m────────────"
-        - "&dplay.zerocores.my.id"
-                    </pre>
-                </div>
-            </section>
-
-            <!-- GEYSER -->
-            <section id="geyser" class="doc-section">
-                <h1>Geyser & Floodgate (Crossplay Bedrock)</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-config">YAML Config</span> (`/plugins/Geyser-Spigot/config.yml`)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-bedrock:
-  address: 0.0.0.0
-  port: 19132
-remote:
-  address: auto
-  port: 25565
-  auth-type: floodgate
-                    </pre>
-                </div>
-            </section>
-
-            <!-- CHUNKY -->
-            <section id="chunky" class="doc-section">
-                <h1>Chunky (Map Pre-Generation)</h1>
-                <div class="code-container">
-                    <div class="code-header"><span><span class="ctx-badge ctx-console">Console</span> Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                    <pre>
-chunky world Survival
-chunky shape circle
-chunky radius 2000
-chunky start
-                    </pre>
-                </div>
-            </section>
-
-            <!-- SECURITY -->
-            <section id="security" class="doc-section">
-                <h1>Keamanan & Sistem Backup</h1>
-                <ul>
-                    <li>Audit OP Player secara berkala.</li>
-                    <li>Gunakan CoreProtect untuk melacak duka/griefing: <code>/co l u:[player] t:1d a:block</code>.</li>
-                    <li>Lakukan backup berkala via menu Pterodactyl.</li>
-                </ul>
-            </section>
-
-            <!-- TROUBLESHOOTING -->
-            <section id="troubleshooting" class="doc-section">
-                <h1>Troubleshooting Matrix</h1>
-                <div class="table-responsive">
-                    <table>
-                        <tr><th>Gejala Error</th><th>Akar Penyebab</th><th>Tindakan Pemeriksaan</th><th>Solusi / Command Fix</th></tr>
-                        <tr>
-                            <td>1. Server Crash saat Start</td>
-                            <td>Versi Java tidak cocok</td>
-                            <td>Cek tab Startup Pterodactyl</td>
-                            <td>Ubah ke Java 21 / Java 25.</td>
-                        </tr>
-                        <tr>
-                            <td>2. Geyser Bedrock gagal Connect</td>
-                            <td>Port UDP terblokir</td>
-                            <td>Jalankan <code>geyser connectiontest</code></td>
-                            <td>Minta port UDP Allocation tambahan di LavaHosting.</td>
-                        </tr>
-                        <tr>
-                            <td>3. Plugin Pancingan/RPG muncul di Survival</td>
-                            <td>Belum di-Isolasi Per-World</td>
-                            <td>Cek config.yml plugin</td>
-                            <td>Tambahkan "Survival" ke <code>disabled-worlds</code>.</td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-
-            <!-- CHEAT SHEET -->
-            <section id="cheatsheet" class="doc-section">
-                <h1>Master Command Cheat Sheet</h1>
-                <div class="code-container"><pre>/mv create [world] [env] | /mv tp [world] | //schem load [name] | //paste -s | /rg define [id] | /npc create [id] | /dh create [id] | /lp group [group] permission set [node] true</pre></div>
-            </section>
-
-            <!-- OFFICIAL DOCS -->
-            <section id="docs" class="doc-section">
-                <h1>Official Documentation Links</h1>
-                <ul>
-                    <li><a href="https://docs.papermc.io/" target="_blank">PaperMC Documentation</a></li>
-                    <li><a href="https://luckperms.net/wiki" target="_blank">LuckPerms Official Wiki</a></li>
-                    <li><a href="https://wiki.bentobox.world/" target="_blank">BentoBox World Wiki</a></li>
-                    <li><a href="https://wiki.geysermc.org/" target="_blank">GeyserMC Documentation</a></li>
-                </ul>
-            </section>
-        </main>
+        <!-- TAB 5: CHEAT SHEET & FIX -->
+        <div id="tab-cheatsheet" class="tab-content">
+            <h2>Troubleshooting Quick Matrix</h2>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>Masalah</th><th>Penyebab</th><th>Solusi Fast Fix</th></tr>
+                    <tr><td>Plugin Pancingan Muncul di Survival</td><td>Belum di-Isolasi Per-World</td><td>Tambahkan "Survival" ke <code>disabled-worlds</code> pada config plugin terkait.</td></tr>
+                    <tr><td>Geyser Bedrock Tidak Connect</td><td>Port UDP Bentrok</td><td>Buka <code>config.yml</code> Geyser dan samakan port UDP dengan allocation LavaHosting.</td></tr>
+                    <tr><td>Scoreboard Kosong / %placeholder% Mentah</td><td>Expansion PAPI Belum Ditingkatkan</td><td>Jalankan <code>/papi ecloud download Vault</code> lalu <code>/papi reload</code>.</td></tr>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="assets/js/main.js"></script>
