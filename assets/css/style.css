@@ -1,0 +1,238 @@
+/* ZeroCores Official Handbook Stylesheet */
+
+:root {
+    --bg-base: #0a0512;
+    --bg-surface: #130a24;
+    --bg-card: #1c1033;
+    --bg-code: #0d0617;
+    --accent-purple: #8a2be2;
+    --accent-light: #b967ff;
+    --accent-dark: #5a189a;
+    --text-main: #f1f0f5;
+    --text-muted: #a29bfe;
+    --border-color: #2d1b4e;
+    --danger-color: #ff4757;
+    --warning-color: #ffa502;
+    --tip-color: #2ed573;
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    font-family: var(--font-stack);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--accent-light);
+    text-decoration: none;
+}
+
+.brand-logo {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent-dark));
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.menu-toggle {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.container { display: flex; flex: 1; }
+
+aside {
+    width: 280px;
+    background-color: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
+    padding: 1rem;
+    position: fixed;
+    top: 57px;
+    bottom: 0;
+    left: -280px;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    z-index: 999;
+}
+
+aside.active { left: 0; }
+
+@media (min-width: 992px) {
+    aside {
+        left: 0;
+        position: sticky;
+        top: 57px;
+        height: calc(100vh - 57px);
+    }
+    .menu-toggle { display: none; }
+}
+
+.search-box { margin-bottom: 1rem; }
+.search-box input {
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    background-color: var(--bg-code);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-main);
+    font-size: 0.85rem;
+}
+
+.nav-group { margin-bottom: 1.2rem; }
+.nav-group-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    padding-left: 0.4rem;
+}
+
+.nav-links { list-style: none; }
+.nav-links a {
+    display: block;
+    padding: 0.4rem 0.6rem;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background-color: var(--bg-card);
+    color: var(--accent-light);
+}
+
+main {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media (min-width: 992px) {
+    main {
+        max-width: calc(100% - 280px);
+        padding: 2.5rem;
+    }
+}
+
+.doc-section { margin-bottom: 3rem; scroll-margin-top: 70px; }
+h1 { font-size: 2rem; color: var(--accent-light); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; color: var(--text-main); margin: 1.5rem 0 0.8rem 0; }
+h3 { font-size: 1.1rem; color: var(--text-muted); margin: 1.2rem 0 0.5rem 0; }
+p { margin-bottom: 1rem; font-size: 0.95rem; }
+ul, ol { margin-left: 1.2rem; margin-bottom: 1rem; font-size: 0.95rem; }
+li { margin-bottom: 0.3rem; }
+a { color: var(--accent-light); }
+
+.code-container {
+    position: relative;
+    margin: 1rem 0;
+    background-color: var(--bg-code);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.03);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+}
+
+pre {
+    padding: 0.8rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #e6edf3;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.copy-btn {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: background 0.2s;
+}
+
+.copy-btn:hover { background-color: var(--accent-dark); }
+
+.ctx-badge {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-right: 0.4rem;
+}
+
+.ctx-console { background-color: #2f3542; color: #70a1ff; border: 1px solid #70a1ff; }
+.ctx-player { background-color: #1e3799; color: #a4b0be; border: 1px solid #4a69bd; }
+.ctx-config { background-color: #079992; color: #eccc68; border: 1px solid #eccc68; }
+.ctx-perm { background-color: #b71540; color: #ffda79; border: 1px solid #ffda79; }
+
+.table-responsive { width: 100%; overflow-x: auto; margin: 1rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+th, td { padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); }
+th { background-color: var(--bg-card); color: var(--accent-light); }
+tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.01); }
+
+.overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    z-index: 998;
+}
+
+.overlay.active { display: block; }
